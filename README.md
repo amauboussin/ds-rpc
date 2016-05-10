@@ -1,5 +1,5 @@
 # ds-rpc
-Remote procedure calling system built for data science applications. CS262 Final Project.
+Remote procedure calling system built for data science applications. CS262 Final Project by Andrew Mauboussin (amaub217@gmail.com).
 
 ### Overview
 
@@ -9,6 +9,8 @@ The functionality of the application is probably best shown by example:
 
 ##### Running R code remotely using the Python client library
 ```python
+from ds_rpc import Server
+server = Server() # url set settings.json
 # sample from a Dirichlet distribution with uniform alpha
 ones = [1 for _ in range(3)]
 n_samples = 3
@@ -19,6 +21,7 @@ print result  #[[[0.0606,0.1637,0.095,0.6807],[0.0625,0.6069,0.2534,0.0773],[0.2
 ##### Running Python code remotely using JavaScript client library
 ```javascript
 // calculate the correlation coefficient between two lists of random numbers
+var server = new Server(server_url);
 var callback = function(result){console.log(result);}
 var x = get_n_random_numbers(100); //gets a list of 100 random numbers between 0 and 1
 var y = get_n_random_numbers(100);
@@ -39,5 +42,16 @@ virtualenv venv
 source venv/bin/activate (to activate)
 pip install -r requirements.txt (to install dependencies)
 ```
+
+Remotely executing R code will require R [https://www.r-project.org/](https://www.r-project.org/)
+
+After the dependencies are installed the server can be run with `python app.py`.
+
+###### Client
+
+The Python client library depends on the Requests package (`pip install requests`) and the JavaScript client library depends on jQuery.
+The client libraries each expose a Server class (imported from ds_rpc.py or ds_rpc.js) that can be used to run code remotely. Both server exposes two functions, Server.python and Server.r. In Python, the server functions run synchronously and take a string denoting the name of the function to be run followed by the arguments to the function. In JavaScript, the server functions run asynchronously and take a callback function, a string denoting the name of the function to be run, and finally any arguments required by the given function (see examples above). 
+
+
 
 
