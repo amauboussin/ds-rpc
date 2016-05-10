@@ -47,7 +47,7 @@ Remotely executing R code will require R [https://www.r-project.org/](https://ww
 
 After the dependencies are installed the server can be run with `python app.py`.
 
-###### Client
+##### Client
 
 The Python client library depends on the Requests package (`pip install requests`) and the JavaScript client library depends on jQuery.
 The client libraries each expose a Server class (imported from ds_rpc.py or ds_rpc.js) that can be used to run code remotely. Both server exposes two functions, Server.python and Server.r. In Python, the server functions run synchronously and take a string denoting the name of the function to be run followed by the arguments to the function. In JavaScript, the server functions run asynchronously and take a callback function, a string denoting the name of the function to be run, and finally any arguments required by the given function (see examples above). 
