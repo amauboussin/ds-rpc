@@ -31,7 +31,7 @@ server.python(callback, 'scipy.stats.pearsonr', x, y);
 // (the scipy pearsonr function returns the correlation constant and the p value)
 ```
 
-### Setup
+### Setup and usage
 
 ##### Server
 
@@ -45,14 +45,15 @@ pip install -r requirements.txt (to install dependencies)
 
 Remotely executing R code will require R [https://www.r-project.org/](https://www.r-project.org/)
 
-After the server is running, you can test if it working by going to [http://127.0.0.1:5000/demo](http://127.0.0.1:5000/demo) in a browser. This will  send requests to the server via the JavaScript client library and display the results. 
-
 After the dependencies are installed the server can be run with `python app.py`.
+
+Once the server is running, you can test if it working by going to [http://127.0.0.1:5000/demo](http://127.0.0.1:5000/demo) in a browser. This will  send requests to the server via the JavaScript client library and display the results. Or, if you just want to what the demo would look like if you had a working server, you can check out static_demo.html
+
 
 ##### Client
 
 The Python client library depends on the Requests package (`pip install requests`) and the JavaScript client library depends on jQuery.
-The client libraries each expose a Server class (imported from ds_rpc.py or ds_rpc.js) that can be used to run code remotely. Both server exposes two functions, Server.python and Server.r. In Python, the server functions run synchronously and take a string denoting the name of the function to be run followed by the arguments to the function. In JavaScript, the server functions run asynchronously and take a callback function, a string denoting the name of the function to be run, and finally any arguments required by the given function (see examples above). 
+The client libraries each expose a Server class (imported from ds_rpc.py or ds_rpc.js) that is initialized with the URL of your server and can be used to run code remotely. Both server exposes two functions, Server.python and Server.r. In Python, the server functions run synchronously and take a string denoting the name of the function to be run followed by the arguments to the function. In JavaScript, the server functions run asynchronously and take a callback function, a string denoting the name of the function to be run, and finally any arguments required by the given function (see examples above). 
 
 
 
