@@ -1,0 +1,141 @@
+
+
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+    <meta charset="utf-8">
+    <title>Data science RPC Example</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="/js_bindings.js"></script>
+
+    <style>
+        .title{
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        .explanation{
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <h1 class="title"> Data Science RPC JavaScript Demo </h1>
+                    <p class="explanation"> Below are some demonstrations of the Data Science Remote Procedure Call system using the JavaScript bindings. The server is instantiated by calling "var server = new Server(url_of_server);".
+                    After the server is set up, the server.python or server.r functions call be used call any Python or R functions available on the server. Both of these functions run asynchronously and take a callback that processes the result as the first argument. The second argument is the function to be called, and any remaining arguments are serialized and passed to the given Python/R function. For each box below, an asynchronous request is sent to the data science rpc server with a callback stringifies and displays the results.
+                    </p>
+                <div class="demo">
+                    <h4>Finding Correlation Coefficients with Python</h4>
+                    <div id="correlation-python" class="well">
+                        <p>var x = get_n_random_numbers(100);</p>
+                        <p>var y = get_n_random_numbers(100);</p>
+                        <p>server.python(add_to_div('#correlation-python'), 'scipy.stats.pearsonr', x, y);</p>
+                    </div>
+                </div>
+                <div class="demo">
+                    <h4>Finding Correlation Coefficients with R</h4>
+                    <div id="correlation-r" class="well">
+                        <p>server.r(add_to_div('#sample-r'), 'gtools.rdirichlet', x, y);</p>
+                    </div>
+                </div>
+                <div class="demo">
+                    <h4>Computing A Matrix Inverse with Python</h4>
+                    <div id="matrix-python" class="well">
+                        <p>var m = make_diagonal_matrix(3, 2); //List of lists in the shape of a diagonal matrix</p>
+                        <p>server.python(add_to_div('#matrix-python'), 'scipy.linalg.inv', m); </p>
+                    </div>
+                </div>
+                <div class="demo">
+                    <h4>Computing A Matrix Inverse with R</h4>
+                    <div id="matrix-r" class="well">
+                        <p>var m = make_diagonal_matrix(3, 2); //List of lists in the shape of a diagonal matrix</p>
+                        <p>server.r(add_to_div('#matrix-python'), 'solve', m); </p>
+                    </div>
+                </div>
+                <div class="demo">
+                    <h4>Sampling from a Dirichlet Distribution with Python</h4>
+                    <div id="sample-python" class="well">
+                        <p>var alpha = get_n_ones(4) //[1,2,3,4]</p>
+                        <p>var n_samples = 3;</p>
+                        <p>server.python(add_to_div('#sample-python'), 'numpy.random.dirichlet', alpha, n_samples);</p>
+                    </div>
+                </div>
+                <div class="demo">
+                    <h4>Sampling from a Dirichlet Distribution with R </h4>
+                    <div id="sample-r" class="well">
+                        <p>var alpha = get_n_ones(4)</p>
+                        <p>var n_samples = 3;</p>
+                        <p>server.r(add_to_div('#sample-r'), 'gtools.rdirichlet', n_samples, alpha);</p>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+<script>
+var server = new Server('/');
+function add_to_div(selector){
+    return function(data){
+        $(selector).append('<p> >>' + JSON.stringify(data) + '</p>');
+    }
+}
+function make_diagonal_matrix(n, value){
+    // Create an nxn diagonal matrix for testing
+    var m = [];
+    for (var i=0; i<n; i++){
+        var row = [];
+        for (var j=0; j<n; j++){
+            row[j] = i === j ? value : 0;
+        }
+        m[i] = row;
+    }
+    return m;
+}
+
+function get_n_random_numbers(n){
+    //List of n numbers between 0 and 1
+    var res = [];
+    for(var i=0; i<n; i++){
+        res.push(Math.random());
+    }
+    return res;
+}
+
+function get_n_ones(n){
+    // List of n ones
+    var res = [];
+    for(var i=0; i<n; i++){
+        res.push(1);
+    }
+    return res;
+}
+
+var m = make_diagonal_matrix(3, 2);
+server.python(add_to_div('#matrix-python'), 'scipy.linalg.inv', m);
+server.r(add_to_div('#matrix-r'), 'solve', m);
+
+var x = get_n_random_numbers(100);
+var y = get_n_random_numbers(100);
+server.python(add_to_div('#correlation-python'), 'scipy.stats.pearsonr', x, y);
+server.r(add_to_div('#correlation-r'), 'cor', x, y);
+
+var alpha = get_n_ones(4)
+var n_samples = 3;
+server.python(add_to_div('#sample-python'), 'numpy.random.dirichlet', alpha, n_samples);
+server.r(add_to_div('#sample-r'), 'gtools.rdirichlet', n_samples, alpha);
+
+
+</script>
+
+</body>
+
+</html>
+
