@@ -1,18 +1,10 @@
-'''Python bindings for data science rpc
-Serialze and deserialze data'''
-
-'''Types:
-    Number: value, python_type, js_type
-    Array: values, python_type, js_type, dims
-    String: value
-'''
-
+"""Server functionality for ds_rpc system"""
 import json
 import importlib
 import os
 import time
 
-from bindings.python import serialize_python_result
+from python import serialize_python_result
 
 VERSION = 0.1
 LANGUAGES = {'python', 'r'}
@@ -119,6 +111,7 @@ def execute_r_code(json_data, _function, n_args):
      },
     finally = {})""" % r_code
 
+    #  execute R code in shell and capture output
     open(r_code_path, 'w').write(r_code)
 
     r_data_stream = os.popen('Rscript %s --vanilla' % r_code_path)

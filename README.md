@@ -3,7 +3,7 @@ Remote procedure calling system built for data science applications. CS262 Final
 
 ### Overview
 
-This application consists of a server that can run code from any Python or R library remotely for its clients. Communicating with the server requires using one of the client libraries (right now, client libraries exist for Python and JavaScript). The server has all of the needed libraries installed so the clients don't need any extra code besides the lightweight client libraries. 
+This application consists of a server that can run code from any Python or R library remotely for its clients. Communicating with the server requires using one of the client libraries (right now, client libraries exist for Python and JavaScript). Clients can send requests with a function name from any Python or R library and a series of arguments. The server will run the computation and return the results. The client libraries abstract out serialization and network communication and provide a simple interface. 
 
 The functionality of the application is probably best shown by example:
 
@@ -44,6 +44,8 @@ pip install -r requirements.txt (to install dependencies)
 ```
 
 Remotely executing R code will require R [https://www.r-project.org/](https://www.r-project.org/)
+
+After the server is running, you can test if it working by going to [http://127.0.0.1:5000/demo](http://127.0.0.1:5000/demo) in a browser. This will  send requests to the server via the JavaScript client library and display the results. 
 
 After the dependencies are installed the server can be run with `python app.py`.
 

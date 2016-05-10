@@ -1,0 +1,52 @@
+
+\documentclass[11pt]{article}
+
+\usepackage{common}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\title{CS262 Final Project: Remote Procedure Calls for Data Science}
+\author{Andrew Mauboussin \\ ammaub@college.harvard.edu}
+\begin{document}
+
+\maketitle{}
+Code and documentation at \href{https://github.com/amauboussin/ds-rpc}{https://github.com/amauboussin/ds-rpc}
+
+\section{Abstract}
+This paper presents a system for calling scientific computing functions remotely. The system is structured similar to previous RMI/RPC systems with a small number of types (numerical primitives and multi-dimensional arrays). The small interface allows multi-language serialization/de-serialization using JSON (client libraries are provided for Python and JavaScript and could quickly be implemented in other languages). No code is sent over the network; instead, the server exposes scientific computing functions from various Python/R libraries (numpy, scipy, gtools, etc.). The system could prove useful for running scientific computing functions on devices where it is impractical to install the appropriate libraries or reimplement the required functionality  without having to implement a custom interface and think about message passing/serialization. 
+
+\section{Introduction}
+
+There are several reasons why it may be necessary to run code remotely for data intensive applications. First, it may not be practical to store all the necessary data in the memory of one machine. This problem has motivated a variety of ``big data" systems that perform computations over partitioned data, including Google MapReduce and Apache Spark. Second, it may not be practical to run execute code on a given machine, either because it would be too slow or because it would be cumbersome to install or reimplement functionality from a given library. 
+
+Today, this problem is often solved through the implementation of a custom API. The wide availability of standard implementations for serialization (JSON, Protocol Buffers) and web frameworks (Rails, Django, Node) that allow easy message passing over the Internet continue to make this solution an attractive option. But implementing a custom API inevitably means defining, documenting, and maintaining an interface, which can be a lot of work. Another option is abstracting out the serialization and message passing with a system like RMI. After a bit of configuration, these systems allows programmers to call remote functions the same way they call local ones (just add an extra line or two to catch the remote exception). However, the abstractions they provide make multi-language support using these systems difficult - they are typically forced to take the set intersection of types between the supported languages or maintain a custom interface between types. 
+
+``Data science RPC" is a new system that provides a multi-language abstraction over serialization and message sending by maintaining a narrow scope. The inspiration for the project comes from the observation that most scientific computing libraries are primarily around matrix/multi-dimensional array types and numerical primitives. 
+
+\section{System Overview}
+
+\subsection{Server}
+
+
+\subsection{Client Libraries}
+
+
+\section{Limitations}
+
+% Avoid reference/value issues by not allowing custom types
+
+% json is slow
+% won't work for big data
+% two main problems: serializing code and serializing data. works by just avoid/minimize both of them
+
+
+%\begin{center}
+%\includegraphics[scale=.7]{direct}
+%\end{center}
+
+\section{Conclusion}
+
+
+\bibliographystyle{apalike}
+\bibliography{writeup}
+
+\end{document}

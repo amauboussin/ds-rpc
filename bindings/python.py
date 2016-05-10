@@ -1,3 +1,4 @@
+"""Python bindings for data science RPC"""
 import json
 
 identity = lambda x: x
